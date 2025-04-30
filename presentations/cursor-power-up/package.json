@@ -1,0 +1,11 @@
+{
+  "name": "cursor-power-up",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "slidev --open",
+    "build": "slidev build",
+    "export:pdf": "slidev export --format pdf",
+    "export:png": "slidev export --format png"
+  }
+}

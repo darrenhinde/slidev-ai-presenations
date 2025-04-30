@@ -1,0 +1,21 @@
+{
+  "name": "slidev-multi-presentation",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "menu": "chmod +x slidev-menu.sh && ./slidev-menu.sh",
+    "list": "find presentations -maxdepth 1 -type d -not -path presentations -exec basename {} \\; | sort",
+    "create": "chmod +x create-presentation.sh && ./create-presentation.sh",
+    "run": "chmod +x run-presentation.sh && ./run-presentation.sh",
+    "export-all": "for dir in presentations/*; do (cd \"$dir\" && echo \"Exporting $(basename \"$dir\")...\" && pnpm slidev export); done"
+  },
+  "dependencies": {
+    "@slidev/cli": "^51.3.0",
+    "@slidev/theme-default": "latest",
+    "@slidev/theme-seriph": "latest",
+    "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "playwright-chromium": "^1.51.0"
+  }
+}

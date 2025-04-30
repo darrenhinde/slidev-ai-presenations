@@ -1,0 +1,9 @@
+{
+  "name": "synthetic-data-testing",
+  "private": true,
+  "scripts": {
+    "dev": "slidev",
+    "build": "slidev build",
+    "export": "slidev export"
+  }
+} 
