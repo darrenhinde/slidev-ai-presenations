@@ -1,0 +1,117 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Instructions for Creating New Slidev Presentations
+
+Always start your reply with "LETS DO THIS!"
+
+All new presentations should be in the presentations folder! This is crucial. Use the Project Setup guidelines.
+
+## 1. Project Setup
+
+1. **Create a deck** (using the project script)
+   ```bash
+   # Follow the prompts after running:
+   npm run create -- "Your Presentation Name"
+   # Alternatively, use the interactive menu:
+   npm run menu 
+   ```
+2. **Start the dev-server** (using the project script)
+   ```bash
+   # Run the specific presentation (replace <name>):
+   npm run run -- <presentation-name>
+   # Or use the interactive menu:
+   npm run menu 
+   # This opens http://localhost:3030 with hot-reload
+   ```
+
+## 2. Presentation Planning
+
+1. Create a `presentation-plan.txt` in your presentation folder
+   - Copy the template from `presentation-plan-template.txt`
+   - Fill in all sections of the planning document
+   - Use the checkboxes to track your progress
+
+2. Refer to `slide-content-planning.txt` for detailed guidance on:
+   - Defining your objective and audience
+   - Content organization
+   - Visual design strategy
+   - Implementation techniques
+
+## 3. File Organization
+
+```
+└─ presentations/
+   └─ your-presentation-name/
+      ├─ presentation-plan.txt  # your planning document
+      ├─ slides.md              # main slide file with headmatter
+      ├─ slides/                # individual slide files
+      │  ├─ 01-intro.md
+      │  ├─ 02-problem.md
+      │  └─ ...
+      └─ assets/                # images, diagrams, etc.
+         ├─ images/
+         ├─ diagrams/
+         └─ code-examples/
+```
+
+## 4. Slide Creation Process
+
+1. First set up your global headmatter in `slides.md`:
+   ```yaml
+   ---
+   theme: default       # Choose your theme
+   title: My Presentation
+   transition: slide-left
+   lineNumbers: true
+   fonts:
+     sans: Montserrat, Roboto
+   highlighter: shiki
+   ---
+   ```
+
+   This is also the first visible Slide in the Presentation so use this as the Opening slide. 
+
+2. Create individual slide files in the `slides/` directory
+   - Follow patterns in `slide-creation-guide.txt`
+   - Use consistent layouts and styling
+   - Keep content concise (5-7 points per slide)
+
+3. Import your slides in the main `slides.md`:
+   ```markdown
+   ---
+   theme: penguin
+   # other global settings
+   ---
+
+   ---
+   src: ./slides/01-intro.md
+   ---
+
+   ---
+   src: ./slides/02-problem.md
+   ---
+   ```
+
+## 5. Testing & Export
+
+1. Test your presentation frequently
+   - Use Presenter Mode (press `P`) to check for overflow
+   - Test responsiveness by resizing the browser
+
+2. Export your final presentation
+   ```bash
+   npm run slidev export        # PDF, PowerPoint, images
+   npm run slidev build         # Web version (SPA)
+   ```
+
+## 6. Resources
+
+- `slide-rules.txt` - Overall project rules and guidelines
+- `slide-creation-guide.txt` - Patterns and examples for slides
+- `slide-content-planning.txt` - Comprehensive planning guide
+- `presentation-plan-template.txt` - Template for planning document
+
+Follow these instructions to create well-structured, visually appealing, and effective Slidev presentations. 

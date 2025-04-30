@@ -1,0 +1,201 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Slidev Slide Creation & Editing Guide
+
+## Quick Reference for Common Slide Patterns
+
+Follow [slide-styling-guidelines.mdc](mdc:.cursor/rules/slide-creation/slide-styling-guidelines.mdc) to make sure slides do not overflow the page and look nice. 
+
+### 1. Basic Slide
+```markdown
+---
+layout: default
+---
+# Slide Title
+
+- Bullet point 1
+- Bullet point 2
+- Bullet point 3
+```
+
+### 2. Two-Column Layout
+```markdown
+---
+layout: default
+---
+# Two Column Layout
+
+<div class="grid grid-cols-2 gap-4">
+<div>
+
+## Left Column
+- Content for left side
+- More points here
+
+</div>
+<div>
+
+## Right Column
+- Content for right side
+- More points here
+
+</div>
+</div>
+```
+
+### 3. Code Example Slide
+```markdown
+---
+layout: default
+---
+# Code Example
+
+```js {2-3|5|all}
+function example() {
+  // These lines highlight first
+  const value = computeSomething();
+  
+  return value; // Then this line highlights
+}
+```
+```
+
+### 4. Image Slide
+```markdown
+---
+layout: center
+---
+# Image Example
+
+<div class="flex justify-center">
+  <img src="/path/to/image.jpg" class="h-60 rounded shadow" />
+</div>
+
+Caption text here
+```
+
+### 5. Section Divider
+```markdown
+---
+layout: section
+---
+# New Section Title
+```
+
+### 6. Quote Slide
+```markdown
+---
+layout: quote
+---
+
+"This is an important quote that stands out on its own slide."
+
+<footer>Source Attribution</footer>
+```
+
+### 7. Diagram Slide
+```markdown
+---
+layout: default
+---
+# Diagram Example
+
+```mermaid
+graph TD
+  A[Start] --> B[Process]
+  B --> C[Decision]
+  C -->|Yes| D[End]
+  C -->|No| B
+```
+
+Diagram explanation text
+```
+
+## Styling Tips
+
+### Text Styling
+- `<span class="text-red-500">Red text</span>`
+- `<span class="font-bold">Bold text</span>`
+- `<span class="opacity-50">Faded text</span>`
+- `<span class="text-xs">Small text</span>` or `<span class="text-xl">Large text</span>`
+
+### Layout Helpers
+- `<div class="mt-4">Add margin top</div>`
+- `<div class="p-4 border rounded">Boxed content</div>`
+- `<div class="flex justify-between">Spaced content</div>`
+
+### Adding Custom Styling
+```markdown
+<style>
+h1 { color: #E06C75; }
+h2 { color: #61AFEF; }
+.custom-box { 
+  border: 2px solid #98c379; 
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+</style>
+
+<div class="custom-box">
+  This content will be in a styled box
+</div>
+```
+
+## Working with Slides
+
+### Splitting Into Files
+Main `slides.md`:
+```markdown
+---
+theme: penguin
+title: My Presentation
+---
+
+---
+src: ./slides/01-intro.md
+---
+
+---
+src: ./slides/02-content.md
+---
+```
+
+Individual slide files (e.g., `slides/01-intro.md`):
+```markdown
+---
+layout: cover
+background: ./images/cover.jpg
+---
+
+# My Presentation
+## Subtitle Here
+
+Author Name
+```
+
+### Navigation Comments
+Add comments to help navigate between slides:
+```markdown
+---
+layout: default
+---
+
+# Slide Title
+
+Content goes here
+
+<!-- This comment helps mark the purpose of this slide for editing -->
+```
+
+## Testing & Refinement
+1. Use Presenter Mode (press `P` while presenting) to:
+   - See speaker notes
+   - Check for overflowing content
+   - Monitor timing
+
+2. Test responsiveness by resizing the browser window
+
+3. Check transitions between slides with different layouts and backgrounds 

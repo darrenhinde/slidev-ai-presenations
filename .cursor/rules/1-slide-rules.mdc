@@ -1,0 +1,113 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Slidev Presentation Development Rules
+
+## 1. Overall Project Rules
+- All presentations must be created in the `presentations/` folder
+- Follow naming conventions: PascalCase for components, kebab-case for files
+- Use modular coding - keep code concise and easy to follow
+- Include comments to explain steps in your code
+- Follow SOLID principles and prefer functional/declarative programming
+
+## 2. New Presentation Creation
+All new presentations should be in the presentations folder! This is crucial.
+
+Follow [2-new-presentation.mdc](mdc:.cursor/rules/2-new-presentation.mdc) when creating new presentations. 
+
+
+## 3. Presentation Planning Rules
+
+1. Begin with a planning document: Create a `presentation-plan.txt` file in your presentation folder
+2. Document the following in your plan:
+   - Presentation objective and target audience
+   - Main message/takeaway
+   - Logical flow and sections
+   - Key points for each section
+   - Visual elements needed (diagrams, code examples, images)
+3. Use checkboxes to track progress:
+   ```
+   - [x] Introduction section completed
+   - [ ] Problem statement section
+   - [ ] Solution approach section
+   ```
+4. Refer to the comprehensive planning guide: [3-presentation-plan-template.mdc](mdc:.cursor/rules/3-presentation-plan-template.mdc) for detailed planning methodology
+5. Remember to always tick off completed sections!
+
+## 4. Recommended File Structure
+```
+└─ presentations/
+   └─ my-presentation/
+      ├─ presentation-plan.txt  # your planning document
+      ├─ slides.md              # the headmatter and high-level slides
+      └─ slides/                # individual pages imported with `src:`
+         ├─ 01-intro.md
+         ├─ 02-problem.md
+         └─ …
+```
+
+## 5. Slide Creation/Editing Rules
+- Keep content concise - 5-7 bullet points maximum per slide
+- Maintain consistent styling throughout the presentation
+- Use appropriate layouts for different content types
+- Implement two-column layouts for comparisons or code+explanation
+- Test frequently to catch rendering issues early
+- Follow the front-matter cheatsheet below
+
+## 6. Front-matter Cheatsheet
+```yaml
+---
+# Head-matter (deck-wide)
+layout: cover        # default layout
+theme: bricks        # theme selection
+background: '#121212'
+class: text-white
+fonts:
+  sans: Montserrat, Roboto
+highlighter: shiki
+lineNumbers: true
+---
+```
+
+Important per-slide keys:
+* `layout`: `default | center | section | intro …` (varies by theme)
+* `class`: utility classes (UnoCSS / Tailwind syntax)
+* `background`: color, image url or number (theme-specific)
+* `src`: path to an external slide file (multi-page support)
+
+## 7. Example Slide Structure
+```markdown
+---
+layout: default
+---
+
+# Main Slide Title
+
+<div class="grid grid-cols-2 gap-4 mt-4">
+<div>
+
+## Left Column Heading
+- Key point 1
+- Key point 2
+- Key point 3
+
+</div>
+<div>
+
+## Right Column Heading
+```code example or content```
+
+</div>
+</div>
+```
+
+When creating Mermaid diagrams never put a "()" in it like  " A[AI Model (Claude)] "
+
+
+For more detailed guidance, refer to  [4-slide-creation-guide.mdc](mdc:.cursor/rules/4-slide-creation-guide.mdc) which contains comprehensive instructions for each phase of presentation development.
+
+
+
+

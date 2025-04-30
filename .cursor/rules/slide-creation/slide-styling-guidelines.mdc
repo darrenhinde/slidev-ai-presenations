@@ -1,0 +1,94 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Slidev Presentation Guidelines for Interns
+## Preventing Content Overflow & Creating Professional Slides
+
+### Text Content Rules
+1. **Keep it short**: 
+   - Maximum 5-7 words per bullet point
+   - No more than 4-5 bullet points per slide
+   - Break complex ideas into multiple slides
+
+2. **Text sizing hierarchy**:
+   - Headers: text-2xl to text-4xl (use sparingly)
+   - Main content: text-base to text-lg
+   - Descriptions/captions: text-xs to text-sm
+   - Add `leading-tight` to reduce line spacing
+
+3. **Content padding**:
+   - Leave 10% margin on all sides of content
+   - Use `p-2 sm:p-3 md:p-4` for responsive padding
+
+### Mermaid Diagram Guidelines
+1. **Size control**:
+   - Always set `scale: 0.7` or `scale: 0.8` (never higher)
+   - Set `theme: 'neutral'` for consistent styling
+
+2. **Content limitations**:
+   - Maximum 5-7 nodes total
+   - Keep node labels under 8 characters
+   - Use simple connection lines (avoid complex branching)
+   - Prefer `graph LR` (left-right) over `graph TD` (top-down)
+
+3. **Styling simplification**:
+   - Use custom classes sparingly (max 1-2)
+   - Avoid nested subgraphs when possible
+
+### Responsive Layout Formula (Always Use These)
+1. **Grid patterns**:
+   ```html
+   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-3 md:gap-4">
+     <!-- Content here -->
+   </div>
+   ```
+
+2. **Two-column layout**:
+   ```html
+   <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+     <div><!-- Left content --></div>
+     <div><!-- Right content --></div>
+   </div>
+   ```
+
+3. **Element sizing**:
+   ```html
+   <span class="text-xl sm:text-2xl md:text-3xl">Title</span>
+   <p class="text-xs sm:text-sm md:text-base">Description</p>
+   ```
+
+### Content Limits by Component Type
+| Component | Small Screen | Medium Screen | Large Screen |
+|-----------|--------------|---------------|--------------|
+| Icons     | Max 3        | Max 6         | Max 9        |
+| Grid cells | Max 4       | Max 6         | Max 9        |
+| Diagram nodes | Max 4    | Max 6         | Max 8        |
+| Text lines | Max 6       | Max 8         | Max 10       |
+
+### Testing Checklist ✓
+1. Test at these viewport sizes:
+   - Small: 640px (mobile)
+   - Medium: 1024px (tablet/laptop)
+   - Large: 1536px (presentation)
+
+2. Use these testing methods:
+   - Press `P` for presenter mode to see notes
+   - Use `O` to see slide overview
+   - Test transitions between slides
+
+3. Overflow detection trick:
+   ```html
+   <!-- Add to slide temporarily during development -->
+   <div class="border border-dashed border-red-500 absolute inset-0 pointer-events-none"></div>
+   ```
+
+### Common Overflow Fixes
+- Replace text with icons where possible
+- Use tooltips for additional context
+- Split complex slides into multiple slides
+- Move details to presenter notes
+- Use tabs or click-reveals for alternate content
+
+Remember: If content doesn't fit at all screen sizes without forcing tiny text, it's too complex for one slide!

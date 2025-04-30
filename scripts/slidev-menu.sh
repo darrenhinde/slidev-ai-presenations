@@ -49,7 +49,7 @@ create_presentation() {
     return
   fi
   
-  ./create-presentation.sh "$name"
+  ./scripts/create-presentation.sh "$name"
   echo ""
   echo -e "${GREEN}Press Enter to continue...${NC}"
   read

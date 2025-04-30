@@ -1,0 +1,80 @@
+---
+description: Planning new presentation, use to make effective planning. 
+globs: 
+alwaysApply: false
+---
+# Presentation Planning Document
+
+Follow [slide-styling-guidelines.mdc](mdc:.cursor/rules/slide-creation/slide-styling-guidelines.mdc) to make sure we have managable slides, to ensure points and images are not squashed on the slide. 
+
+## Basic Information
+- Title: [Your Presentation Title]
+- Date: [Planned Presentation Date]
+- Duration: [Expected Duration]
+- Target Audience: [Who is this presentation for?]
+
+## Presentation Objective
+[1-2 sentences describing what you want to achieve with this presentation]
+
+## Main Message
+[The single most important takeaway for your audience]
+
+## Presentation Structure
+- [ ] **Introduction** (1-2 slides)
+  - Hook: [How will you grab attention?]
+  - Purpose: [Why this presentation matters]
+  - Overview: [Brief outline of what will be covered]
+
+- [ ] **Problem/Context** (2-3 slides)
+  - [Key problem points to address]
+  - [Relevant background information]
+  - [Why this matters to the audience]
+
+- [ ] **Main Content** (6-10 slides)
+  - [ ] Section 1: [Topic]
+    - Key points: [List main ideas]
+    - Visual elements needed: [Diagrams, code, images]
+  
+  - [ ] Section 2: [Topic]
+    - Key points: [List main ideas]
+    - Visual elements needed: [Diagrams, code, images]
+  
+  - [ ] Section 3: [Topic]
+    - Key points: [List main ideas]
+    - Visual elements needed: [Diagrams, code, images]
+
+- [ ] **Solution/Implementation** (3-5 slides)
+  - [Approach details]
+  - [Implementation steps]
+  - [Code examples or diagrams needed]
+
+- [ ] **Benefits/Results** (1-2 slides)
+  - [Key outcomes to highlight]
+  - [Metrics or examples that demonstrate success]
+
+- [ ] **Summary/Recap** (1 slide)
+  - [Bullet points of key takeaways]
+
+- [ ] **Call to Action/Next Steps** (1 slide)
+  - [What should the audience do next?]
+  - [Resources for further exploration]
+
+- [ ] **Q&A/Thank You** (1 slide)
+  - [Contact information]
+  - [Additional resources]
+
+## Visual Elements Needed
+- [ ] Diagrams:
+  - [List needed diagrams and brief descriptions]
+
+- [ ] Code Examples:
+  - [List code snippets needed and their purpose]
+
+- [ ] Images:
+  - [List images needed and their purpose]
+
+## Resources & References
+- [List of sources, documentation, and research materials]
+
+## Notes & Ideas
+[Any additional thoughts or considerations for the presentation] 

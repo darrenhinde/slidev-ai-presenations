@@ -1,0 +1,661 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Slidev Themes Guide
+
+## Working with Different Themes in Slidev Presentations
+
+### Project-Specific Theme Implementation
+For all presentations in this project, themes should be applied consistently with our established workflow:
+
+1. All themes should be declared in the frontmatter of your `slides.md` file
+2. Theme-specific assets should be organized in the `assets/themes` directory
+3. Custom theme extensions should be placed in `presentations/[presentation-name]/theme/`
+4. Always test themes in development mode before final deployment
+
+### Installing Themes
+To use a specific theme, add it to your slides.md frontmatter:
+
+```markdown
+---
+theme: theme-name
+---
+```
+
+Slidev will prompt you to install the theme automatically when you start the presentation.
+
+Alternatively, install themes manually:
+
+```bash
+npm install @slidev/theme-name
+```
+
+For project-wide theme installation, add it to the root `package.json`:
+
+```bash
+npm install @slidev/theme-name --save
+```
+
+## Theme Directories & Selection Guide
+
+When choosing a theme for your presentation, consider:
+1. **Content type** - Different themes excel at different content types (code, images, text)
+2. **Audience** - Choose themes that align with the audience's expectations
+3. **Branding** - Select themes that can accommodate our branding guidelines
+4. **Layout needs** - Ensure the theme supports layouts required for your content
+
+### 1. @slidev/theme-shibainu
+
+**Best for**: Technical presentations with clean, minimal design
+
+#### Installation
+```markdown
+---
+theme: shibainu
+---
+```
+
+#### Available Layouts
+- `cover` - Title slide
+- `default` - Standard content slide
+- `center` - Centered content
+- `section` - Section divider
+- `default-2` through `default-7` - Variations of default layout
+- `right` - Right-aligned content
+- `section-2` and `section-3` - Alternative section dividers
+- `quote` - For quotations
+
+#### Example Usage
+```markdown
+---
+theme: shibainu
+layout: cover
+---
+# My Presentation
+## Subtitle here
+```
+
+#### Integration Notes
+- Works well with code examples
+- Clean typography makes it ideal for technical content
+- Use `default-2` through `default-7` for progressive content revelation
+
+### 2. @slidev/theme-bricks
+
+**Best for**: Creative presentations with visual emphasis
+
+#### Installation
+```markdown
+---
+theme: bricks
+---
+```
+
+#### Available Layouts
+- `cover` - Title slide
+- `intro` - Introduction slide
+- `default` - Standard content slide
+- `section` - Section divider
+- `items` - For lists or item displays
+- `quote` - For quotations
+- `fact` - For highlighting facts
+- `statement` - For strong statements
+
+#### Special Components
+The bricks theme provides polygon components that can be placed anywhere on slides:
+- `<Polygon1/>` through `<Polygon11/>` - Different polygon shapes for visual interest
+- Can be positioned with TailwindCSS classes: `class="absolute bottom-10 left-20"`
+- Can be styled with custom colors: `class="text-blue-500 opacity-75"`
+
+#### Example Usage
+```markdown
+---
+theme: bricks
+layout: cover
+---
+# My Presentation
+
+<Polygon3 class="absolute bottom-10 left-20" />
+```
+
+#### Integration Notes
+- Excellent for marketing or brand-focused presentations
+- Polygon components can be used to highlight key points
+- Works best with high-quality images
+- Consider setting custom colors to match project branding
+
+### 3. @slidev/theme-apple-basic
+
+**Best for**: Product announcements, executive presentations
+
+#### Installation
+```markdown
+---
+theme: apple-basic
+---
+```
+
+#### Available Layouts
+- `intro` - Title slide with author information
+  ```markdown
+  ---
+  layout: intro
+  ---
+  # Presentation title
+  Presentation subtitle
+
+  <div class="absolute bottom-10">
+    <span class="font-700">Author and Date</span>
+  </div>
+  ```
+
+- `intro-image` - Title with full-width background image
+  ```markdown
+  ---
+  layout: intro-image
+  image: '/path/to/image.jpg'
+  ---
+  <div class="absolute top-10">
+    <span class="font-700">Author and Date</span>
+  </div>
+
+  <div class="absolute bottom-10">
+    <h1>Presentation title</h1>
+    <p>Presentation subtitle</p>
+  </div>
+  ```
+
+- `intro-image-right` - Title with right-aligned image
+  ```markdown
+  ---
+  layout: intro-image-right
+  image: '/path/to/image.jpg'
+  ---
+  # Slide Title
+  ## Slide Subtitle
+  ```
+
+- `image-right` - Content with right-aligned image
+  ```markdown
+  ---
+  layout: image-right
+  image: '/path/to/image.jpg'
+  ---
+  # Slide Title
+  ## Slide Subtitle
+  * Bullet point 1
+  * Bullet point 2
+  ```
+
+- `default` - Standard content slide (used by default)
+- `bullets` - Optimized for bullet points
+  ```markdown
+  ---
+  layout: bullets
+  ---
+  * First point
+  * Second point
+  * Third point
+  ```
+
+- `section` - Section divider
+  ```markdown
+  ---
+  layout: section
+  ---
+  # Section Title
+  ```
+
+- `statement` - For impactful statements
+  ```markdown
+  ---
+  layout: statement
+  ---
+  # Important Statement
+  ```
+
+- `fact` - For highlighting key facts/statistics
+  ```markdown
+  ---
+  layout: fact
+  ---
+  # 100%
+  Fact information
+  ```
+
+- `quote` - For quotations
+  ```markdown
+  ---
+  layout: quote
+  ---
+  # "Notable quote"
+  Attribution
+  ```
+
+- `3-images` - Layout with 3 image positions
+  ```markdown
+  ---
+  layout: 3-images
+  imageLeft: '/path/to/left.jpg'
+  imageTopRight: '/path/to/topright.jpg'
+  imageBottomRight: '/path/to/bottomright.jpg'
+  ---
+  ```
+
+- `image` - Full slide image
+  ```markdown
+  ---
+  layout: image
+  image: '/path/to/image.jpg'
+  ---
+  ```
+
+#### Image Quality Requirements
+For optimal results with the apple-basic theme:
+- Use high-resolution images (minimum 1920x1080px)
+- Prefer images with white or light backgrounds for text contrast
+- For `intro-image` slides, use images with lower detail on the bottom third for text overlay
+
+#### Integration Notes
+- Perfect for product demos and announcements
+- Clean, professional aesthetic for executive audiences
+- Strong emphasis on imagery and minimal text
+- Ideal for presentations that need polish and professionalism
+
+### 4. @slidev/theme-seriph
+
+**Best for**: Academic or formal presentations
+
+#### Installation
+```markdown
+---
+theme: seriph
+---
+```
+
+#### Customization
+You can customize the primary color and other aspects:
+
+```markdown
+---
+theme: seriph
+themeConfig:
+  primary: '#5d8392'
+  secondary: '#e0e0e0'
+  fontSize: {
+    default: '20px',
+    code: '16px'
+  }
+  fonts: {
+    serif: 'Palatino, "Times New Roman", serif',
+    mono: 'Fira Code, monospace'
+  }
+---
+```
+
+#### Integration Notes
+- Excellent for research presentations and academic content
+- Serif fonts add formality and readability
+- Use custom fonts that align with project branding when possible
+- Works well for text-heavy presentations
+
+## Advanced Theme Customization
+
+### Creating Project-Specific Theme Extensions
+
+For consistent branding across all presentations, create a theme extension:
+
+1. Create a `theme` directory in your presentation folder
+2. Add a `styles.css` file with your customizations:
+
+```css
+/* presentations/my-presentation/theme/styles.css */
+
+/* Override theme colors */
+:root {
+  --slidev-theme-primary: #00bd7e !important;
+  --slidev-theme-secondary: #404040 !important;
+  --slidev-theme-background: #f8f9fa !important;
+}
+
+/* Custom slide styles */
+.slidev-layout.custom-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: center;
+}
+
+/* Custom component styles */
+.brand-logo {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  height: 2rem;
+  opacity: 0.7;
+}
+```
+
+3. Import your styles in `slides.md`:
+
+```markdown
+---
+theme: apple-basic
+---
+
+<style>
+  @import './theme/styles.css';
+</style>
+```
+
+### Creating Custom Layouts
+
+For unique layout needs, create custom layout components:
+
+1. Create a `layouts` directory in your presentation folder
+2. Add a Vue component for your layout:
+
+```html
+<!-- presentations/my-presentation/layouts/two-columns.vue -->
+<template>
+  <div class="slidev-layout two-columns">
+    <header>
+      <slot name="header"/>
+    </header>
+    <div class="content">
+      <div class="left">
+        <slot name="left"/>
+      </div>
+      <div class="right">
+        <slot name="right"/>
+      </div>
+    </div>
+    <footer>
+      <slot name="footer"/>
+    </footer>
+  </div>
+</template>
+
+<style>
+.two-columns .content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+</style>
+```
+
+3. Use your custom layout in slides:
+
+```markdown
+---
+layout: two-columns
+---
+
+::header::
+# My Two-Column Slide
+
+::left::
+Content for the left column
+
+::right::
+Content for the right column
+
+::footer::
+Footer information
+```
+
+## Tips for Working with Themes
+
+1. **Preview Different Themes**
+   ```bash
+   # Using the project script:
+   npm run slidev -- --theme [theme-name]
+   
+   # Preview a specific presentation with a different theme:
+   npm run slidev -- presentations/my-presentation/slides.md --theme seriph
+   ```
+
+2. **Theme Switching for Comparison**
+   Create a script to quickly switch between themes for comparison:
+   
+   ```bash
+   # Create in scripts/theme-test.sh
+   #!/bin/bash
+   PRESENTATION=$1
+   THEMES=("default" "seriph" "apple-basic" "bricks" "shibainu")
+   
+   for theme in "${THEMES[@]}"
+   do
+     echo "Testing theme: $theme"
+     npm run slidev -- "presentations/$PRESENTATION/slides.md" --theme $theme
+   done
+   ```
+   
+   Run with: `bash scripts/theme-test.sh my-presentation`
+
+3. **Custom CSS with Any Theme**
+   ```html
+   <style>
+   /* Override theme styles */
+   .slidev-layout {
+     @apply bg-gradient-to-r from-purple-500 to-blue-500;
+   }
+   
+   /* Add project-specific branding */
+   .slidev-layout::after {
+     content: '';
+     background-image: url('/assets/logo-watermark.png');
+     background-position: bottom right;
+     background-repeat: no-repeat;
+     opacity: 0.1;
+     position: absolute;
+     top: 0;
+     left: 0;
+     right: 0;
+     bottom: 0;
+     pointer-events: none;
+   }
+   </style>
+   ```
+
+4. **Extending Themes Project-Wide**
+   Create a central theme extension that can be imported into any presentation:
+   
+   ```
+   └─ assets/
+      └─ themes/
+         └─ base-extension/
+            ├─ styles.css        # Common styles for all presentations
+            ├─ components/       # Shared components
+            └─ layouts/          # Shared layouts
+   ```
+   
+   Import in any presentation:
+   ```markdown
+   <style>
+     @import '../../../assets/themes/base-extension/styles.css';
+   </style>
+   ```
+
+5. **Create Themed Components with Project Branding**
+   ```html
+   <!-- components/BrandFooter.vue -->
+   <template>
+     <div class="brand-footer">
+       <img src="/assets/logo.svg" alt="Logo" class="logo" />
+       <p class="copyright">© 2023 Our Company</p>
+     </div>
+   </template>
+
+   <style>
+   .brand-footer {
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
+     padding: 0.5rem 1rem;
+     position: absolute;
+     bottom: 0;
+     left: 0;
+     right: 0;
+     background-color: var(--slidev-theme-primary, #000);
+     color: white;
+   }
+   
+   .logo {
+     height: 1.5rem;
+   }
+   </style>
+   ```
+   
+   Use in any slide:
+   ```markdown
+   # My Slide Content
+   
+   <BrandFooter />
+   ```
+
+## Common Issues and Solutions
+
+1. **Theme Not Loading**
+   - Ensure theme is correctly installed in the project `package.json`
+   - Check frontmatter syntax in `slides.md`
+   - Try running `npm install` to ensure dependencies are installed
+   - Check for error messages in the terminal when running Slidev
+   - Restart Slidev with `npm run slidev -- --force`
+
+2. **Layout Compatibility**
+   - Not all layouts are available in every theme
+   - Create compatibility wrappers for layouts you need:
+   
+   ```html
+   <!-- layouts/compatibility/quote.vue -->
+   <template>
+     <div class="slidev-layout quote compat-quote">
+       <slot />
+     </div>
+   </template>
+   
+   <style>
+   .compat-quote {
+     /* Styles that make this look like a quote across themes */
+     background-color: var(--slidev-theme-secondary, #eee);
+     border-left: 4px solid var(--slidev-theme-primary, #000);
+     padding: 1rem 2rem;
+   }
+   </style>
+   ```
+
+3. **Image Paths in Different Presentations**
+   For consistent image handling across presentations:
+   
+   - Use absolute paths from the public directory: `/images/photo.jpg`
+   - For presentation-specific images: `./assets/images/photo.jpg`
+   - For shared project images: `/assets/shared-images/photo.jpg`
+   
+   Configure image directory structure:
+   ```
+   └─ public/
+      ├─ assets/
+      │  └─ shared-images/      # Project-wide images 
+      └─ presentations/
+         └─ my-presentation/
+            └─ assets/
+               └─ images/       # Presentation-specific images
+   ```
+
+4. **Mobile Responsiveness**
+   - Test all presentations at standard breakpoints: 1920px, 1280px, 768px
+   - Use responsive utilities from TailwindCSS:
+     ```html
+     <div class="text-sm sm:text-base md:text-lg lg:text-xl">
+       Responsive text scales with screen size
+     </div>
+     
+     <div class="sm:hidden md:block">
+       This content only appears on medium screens and larger
+     </div>
+     ```
+   - Create responsive alternatives for complex layouts:
+     ```html
+     <!-- Hidden on small screens -->
+     <div class="hidden md:block">
+       <ComplexChart />
+     </div>
+     
+     <!-- Simplified version for mobile -->
+     <div class="block md:hidden">
+       <SimplifiedChart />
+     </div>
+     ```
+
+5. **Theme and Code Highlighting**
+   For consistent code highlighting across themes:
+   ```markdown
+   ---
+   theme: shibainu
+   highlighter: shiki
+   shikiTheme: github-dark # or any other theme
+   ---
+   ```
+   
+   Available code highlighting themes:
+   - github-dark
+   - github-light
+   - nord
+   - dracula
+   - solarized-light
+   - solarized-dark
+   - material-theme-palenight
+
+6. **Font Consistency Across Themes**
+   To maintain consistent typography regardless of theme:
+   ```markdown
+   ---
+   theme: seriph
+   fonts:
+     sans: 'Roboto, sans-serif'
+     serif: 'Merriweather, serif'
+     mono: 'Fira Code, monospace'
+   ---
+   ```
+   
+   You can also set fonts in your custom CSS:
+   ```css
+   /* Override theme fonts */
+   :root {
+     --slidev-theme-font-sans: 'Roboto, sans-serif' !important;
+     --slidev-theme-font-serif: 'Merriweather, serif' !important;
+     --slidev-theme-font-mono: 'Fira Code, monospace' !important;
+   }
+   ```
+
+7. **Animation Consistency**
+   To ensure animations work consistently across themes:
+   ```markdown
+   ---
+   theme: apple-basic
+   transition: slide-left # global transition
+   ---
+   
+   ---
+   # This slide uses the global transition
+   ---
+   
+   ---
+   transition: fade
+   ---
+   # This slide uses a fade transition
+   ```
+   
+   Available transitions:
+   - slide-left (default)
+   - slide-right
+   - slide-up
+   - slide-down
+   - fade
+   - zoom-in
+   - zoom-out
+   - none 
