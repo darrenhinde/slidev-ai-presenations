@@ -1,0 +1,14 @@
+{
+  "name": "pink-pig-sandals-benefits",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "slidev --open",
+    "build": "slidev build",
+    "export:pdf": "slidev export --format pdf",
+    "export:png": "slidev export --format png"
+  },
+  "dependencies": {
+    "@slidev/theme-bricks": "^0.25.0"
+  }
+}
