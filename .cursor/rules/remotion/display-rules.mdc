@@ -1,0 +1,308 @@
+---
+description: When creating a video with Remotion, use the following rules.
+globs:
+alwaysApply: false
+---
+# Remotion Guide: Creating Engaging Coding Videos (The "100k-Views Formula")
+
+This guide provides a comprehensive playbook for creating highly engaging, short-form coding videos using Remotion. It is designed to be followed by any team member, including interns, to produce content that is repeatable, professional, and optimized for audience retention.
+
+## 1. Core Philosophy: Modularity & Reusability
+
+To work efficiently, we must build everything as a reusable component. Instead of creating one giant video composition, we build small, independent scenes (e.g., a hook, a code block reveal, a diagram) and then assemble them into a final video.
+
+**Project Structure:**
+
+Your `remotion/my-video/src/` directory is a good model.
+
+-   **`components/`**: Contains small, reusable UI elements (e.g., `BigTerminal.tsx`, `InfoCard.tsx`, `ProgressBar.tsx`). These are the fundamental building blocks.
+-   **`remotion/`**: Contains larger, more complex scene compositions (e.g., `IntroScene.tsx`, `ProfessionalDiagram.tsx`). These are built *from* the smaller components.
+-   **`data/`**: Stores static data, like text for scenes or configuration for animations (e.g., `whenToUseData.ts`). This separates content from presentation.
+-   **`public/`**: For all static assets like images, audio files, and video clips.
+
+When starting a new video project, create a new folder under `remotion/my-video/src/remotion/` to keep its specific scenes and main composition separate from others.
+
+---
+
+## 2. The "100k-Views Formula" Scene-by-Scene Guide
+
+This formula is our blueprint for structuring videos. Here’s how to build each part in Remotion.
+
+### Section 2.1: The Hook (0-3 Seconds) - Grab Attention FAST
+
+**Goal:** Create immediate visual and auditory tension.
+
+**Techniques:**
+
+1.  **Contrarian Claim/Question:**
+    -   Use a dedicated `HookScene.tsx` that displays large, bold text.
+    -   Animate it with `spring()` for a bouncy, attention-grabbing effect.
+
+    ```tsx
+    // Inside a HookScene.tsx component
+    import { spring, useCurrentFrame, useVideoConfig } from 'remotion';
+
+    const frame = useCurrentFrame();
+    const { fps } = useVideoConfig();
+    const scale = spring({ frame, fps, from: 0.5, to: 1, durationInFrames: 15 });
+
+    return <h1 style={{ transform: `scale(${scale})` }}>Stop writing CSS!</h1>;
+    ```
+
+2.  **Visual Teaser (Before/After):**
+    -   Use `<TransitionSeries>` from `@remotion/transitions` to flash the end result.
+    -   Show a "before" state for ~30 frames, then a fast `slide()` or `fade()` transition to the "after" state for another ~30 frames. Your `SplitScreen.tsx` component can be adapted for a great side-by-side reveal.
+
+3.  **Sound Cue:**
+    -   Use the `<Audio>` component with a short, sharp sound from `/public/audio/`. A "swoosh" or "glitch" works well.
+
+    ```tsx
+    import { Audio, staticFile } from 'remotion';
+
+    // Place at the start of your main composition
+    <Audio src={staticFile('audio/enter_sound.mp3')} startFrom={0} endAt={30} volume={0.8} />
+    ```
+
+### Section 2.2: The Build (Stacking Curiosity)
+
+**Goal:** Reveal partial information with snappy pacing to keep the viewer engaged.
+
+**Techniques:**
+
+1.  **"Type-On" Effect for Code:**
+    -   This is the most critical effect for coding b-roll. Simulate live typing. Your `BigTerminal.tsx` should implement this.
+
+    ```tsx
+    // Simplified typing effect logic
+    import { interpolate, useCurrentFrame } from 'remotion';
+
+    const text = "npm install @remotion/cli";
+    const frame = useCurrentFrame();
+    // Adjust the second value in the output range to control typing speed
+    const charsToShow = interpolate(frame, [0, 60], [0, text.length], { extrapolateRight: "clamp" });
+    const visibleText = text.slice(0, Math.floor(charsToShow));
+
+    return <code>{visibleText}</code>;
+    ```
+
+2.  **Jump-Cuts with `<Sequence>`:**
+    -   NEVER show a long, continuous screen recording. Break every action into a short `<Sequence>`.
+    -   Each sequence should be 0.8-1.2 seconds (24-36 frames at 30fps).
+    -   **Example:** One sequence for typing a command, a new sequence for the command's output.
+
+3.  **Dynamic Captions & Keywords:**
+    -   Use a component that animates words in sync with the voiceover. This is advanced but highly effective. The logic involves changing the color or scale of the word whose timestamp matches the current frame.
+
+### Section 2.3: The Pivot (The Pattern Interrupt at 40-60%)
+
+**Goal:** Introduce an unexpected visual to reset the viewer's attention.
+
+**Techniques:**
+
+1.  **Transition to a Diagram:** This is the best pattern interrupt for our content.
+    -   You have a powerful diagramming suite (`ProfessionalDiagram`, `ERDDiagram`). Use it.
+    -   At the 40-60% mark of your video, insert a `<Sequence>` containing a diagram scene.
+    -   Make the transition jarring. A hard cut from a dark terminal to a light diagram background is very effective.
+
+### Section 2.4: The Payoff (The Visual Reveal)
+
+**Goal:** Deliver the promised solution in a visually satisfying way.
+
+**Techniques:**
+
+1.  **Animate the Final Result:**
+    -   Don't just show the final code or UI. Animate its components flying into place.
+    -   Use `spring()` and `interpolate()` to slide, fade, and scale elements into their final positions. Your `PowerFeaturesScene.tsx` and `FeatureGrid.tsx` are perfect for this.
+
+### Section 2.5: The Loop-Cliff & CTA (Drive Engagement)
+
+**Goal:** Encourage replays and direct the viewer to the next step.
+
+**Techniques:**
+
+1.  **Unanswered Tease:**
+    -   In the last 2-3 seconds, use your `OnScreenText.tsx` component to pose a question or tease the next video.
+    -   **Example:** "But what about mobile? Part 2 tomorrow..."
+
+2.  **Hard Call-to-Action (CTA):**
+    -   Use your `EndScreen.tsx` to explicitly tell the viewer what to do.
+    -   "Comment below," "Get the code (link in bio)," etc.
+    -   Your `DownloadButton.tsx` can be used to visually represent a link.
+
+---
+
+## 3. Core Technical Guide for Interns
+
+### Section 3.1: Typography & Code Display
+
+-   **Font:** Use a clean, monospaced font like "Fira Code" or "JetBrains Mono". Define this in a central `DesignSystem.ts` file.
+-   **Syntax Highlighting:** Use a library like `shiki`. The colors should be high-contrast and consistent.
+    -   **Background:** Dark (`#282C34`) or Light (`#FAFAFA`).
+    -   **Keywords:** Vivid (e.g., `#D19A66`).
+    -   **Strings:** Complementary (e.g., `#98C379`).
+    -   **Comments:** Muted (`#5C6370`).
+-   **Highlight & Focus:** To focus on a specific block of code, you can either:
+    -   Pass a `highlightedLines` prop and apply a different style.
+    -   Or, more effectively, wrap the surrounding code in a `<div>` and animate its opacity down to `0.3` using `interpolate()`.
+
+### Section 3.2: Sound Design
+
+-   **Layering:** Always use multiple `<Audio>` components within an `<AbsoluteFill>`.
+    -   **Voiceover:** This is the top layer. `volume={1}`.
+    -   **Background Music:** A subtle, low-tempo loop. `volume={0.1}` or `volume={0.2}`.
+    -   **SFX:** Timed to actions using a `<Sequence>`. `volume={0.6}`.
+
+    ```tsx
+    <AbsoluteFill>
+       <Audio src={voiceover} volume={1} />
+       <Audio src={music} volume={0.1} loop />
+       <Sequence from={90} durationInFrames={30}>
+         <Audio src={sfx} volume={0.6} />
+       </Sequence>
+    </AbsoluteFill>
+    ```
+
+### Section 3.3: Accessibility & Polish
+
+-   **Captions:** Always generate and then manually correct captions.
+-   **Progress Bar:** Use your `ProgressBar.tsx` in the root composition so it's visible throughout the video. It gives viewers a sense of progression.
+
+---
+
+## 4. Intern's Step-by-Step Workflow
+
+1.  **Plan Your Scenes:** Before writing any code, map out your video using the 5-part formula (Hook, Build, Pivot, Payoff, CTA).
+2.  **Gather Assets:** Collect all code snippets, audio files, and images you'll need. Place them in `/public`.
+3.  **Build/Reuse Components:** For each scene in your plan, find an existing component in `src/components` or `src/remotion` that you can reuse. If one doesn't exist, build it, keeping it small and modular.
+4.  **Assemble the Main Composition:** Create a `MyAwesomeVideo.tsx` in a new project folder. Use `<Sequence>` to assemble your scenes in the correct order.
+5.  **Add Audio Layers:** Add the voiceover, background music, and SFX as described in Section 3.2.
+6.  **Add Final Polish:** Add the `ProgressBar` and any other overarching elements like a brand logo.
+7.  **Render & Review:** Export the video and watch it. Does the pacing feel right? Is the hook strong enough? Adjust sequence durations as needed.
+
+---
+
+## 5. Advanced Animation & Visual Polish
+
+Good animation isn't about making things move; it's about making them move with purpose and personality.
+
+-   **`spring()` vs. `interpolate()`**:
+    -   **`spring()`**: Use this for natural, physics-based motion. It's perfect for elements that need to feel dynamic, like a notification popping in or a title bouncing slightly. It gives a sense of life.
+    -   **`interpolate()`**: Use this for precise control over a value's progression. It's ideal for linear movements, fades, and mapping a timeline to an animation (e.g., animating a line drawing). For smoother results, always add an easing function.
+
+    ```tsx
+    // Example of smooth interpolation
+    import { interpolate, Easing } from 'remotion';
+    const opacity = interpolate(frame, [0, 30], [0, 1], {
+        easing: Easing.bezier(0.25, 1, 0.5, 1),
+        extrapolateRight: 'clamp',
+    });
+    ```
+
+-   **Choreographing Animations**:
+    -   Animations are more appealing when staggered. Don't make everything appear at once. Use `<Sequence>` with `from` prop or `delay()` from `@remotion/animation` to offset animations.
+    -   **Example**: Have a title fade in, and 10 frames later, have a subtitle slide in from below.
+
+-   **Entrance & Exit Animations**:
+    -   Everything that appears on screen should have an entrance animation (fade in, slide in, scale up).
+    -   Crucially, don't let elements just vanish. Give them an exit animation (fade out, slide out). This makes transitions feel much smoother.
+
+    ```tsx
+    // Example of an exit animation
+    const opacity = interpolate(
+        frame,
+        [0, 20, durationInFrames - 20, durationInFrames],
+        [0, 1, 1, 0] // Fades in at the start, fades out at the end
+    );
+    ```
+
+---
+
+## 6. Visual Design, Layout & Spacing
+
+A visually pleasing video is easy to watch. The key is managing space and preventing clutter.
+
+-   **Respect the Safe Area**:
+    -   Never place important content at the very edge of the screen. It feels cramped and can be cut off on some displays. Always contain your content within a "safe area" by using padding.
+
+    ```tsx
+    // A main container with 5% padding on all sides
+    <AbsoluteFill style={{ padding: '5%' }}>
+        {/* All your content goes here */}
+    </AbsoluteFill>
+    ```
+
+-   **Master Flexbox & Grid**:
+    -   CSS Flexbox and Grid are your primary tools for layout. Use them inside an `<AbsoluteFill>` to align and distribute elements perfectly. A two-column layout is trivial with flexbox.
+
+    ```tsx
+    <div style={{ display: 'flex', flexDirection: 'row', gap: '20px' }}>
+        <div style={{ flex: 1 }}>Left Column Content</div>
+        <div style={{ flex: 1 }}>Right Column Content</div>
+    </div>
+    ```
+
+-   **Dynamic Sizing with `useVideoConfig()`**:
+    -   Make your designs robust by sizing elements relative to the video dimensions. Get `width` and `height` from the `useVideoConfig()` hook.
+
+    ```tsx
+    const { height } = useVideoConfig();
+    // This title will always be 10% of the video's height
+    const titleFontSize = height * 0.1;
+    ```
+
+-   **Preventing Overflow**:
+    -   The #1 rule: **keep text concise**. Long sentences are the primary cause of overflow.
+    -   If text is long, break it into multiple sequences or reveal it gradually with a "type-on" effect.
+    -   For code blocks, ensure the container has highlighting and focus techniques to manage what's visible, rather than showing a huge file.
+
+---
+
+## 7. Organizing for Multiple Projects
+
+This structure is designed to keep the codebase clean and scalable as we create more videos. The core idea is separating **shared utilities** from **project-specific scenes**.
+
+-   **Utility Components (`src/components/`)**:
+    -   **Definition**: These are generic, reusable building blocks that can be used in ANY video project. They are content-agnostic.
+    -   **Examples**: `ProgressBar.tsx`, `BigTerminal.tsx` (the terminal itself, not the text in it), `InfoCard.tsx`, `Button.tsx`.
+    -   **Rule of Thumb**: If you think a component might be useful in a future video, it's a utility component and belongs here.
+
+-   **Project-Specific Scenes & Compositions (`src/remotion/`)**:
+    -   **Definition**: This is where you assemble your actual videos. **Each new video project gets its own sub-folder here.**
+    -   **Directory Structure Example**:
+        ```
+        src/remotion/
+        ├── a-new-cool-video/
+        │   ├── CoolVideoComposition.tsx  // The final video assembly
+        │   ├── IntroScene.tsx            // A scene specific to this video
+        │   └── index.ts                  // Exports the video for Remotion Studio
+        ├── another-video/
+        │   ├── AnotherVideo.tsx
+        │   └── index.ts
+        └── Root.tsx                      // The main entry point that lists all videos
+        ```
+
+-   **How It All Works Together (Code Example)**:
+    -   A "Project Scene" like `IntroScene.tsx` will *import and use* utility components from `src/components/` and arrange them to tell a specific story.
+
+    ```tsx
+    // Location: src/remotion/a-new-cool-video/CoolVideoComposition.tsx
+    import { Sequence } from 'remotion';
+    import { BigTerminal } from '../../components/BigTerminal'; // Importing a UTIL component
+    import { IntroScene } from './IntroScene'; // Importing a PROJECT-SPECIFIC scene
+
+    export const CoolVideoComposition: React.FC = () => {
+      // This composition assembles scenes into the final video
+      return (
+        <>
+          <Sequence from={0} durationInFrames={90}>
+            <IntroScene title="My Awesome Video!" />
+          </Sequence>
+          <Sequence from={90}>
+            {/* We pass project-specific data to the reusable utility component */}
+            <BigTerminal codeToType="npm i all-the-things" />
+          </Sequence>
+        </>
+      );
+    };
+    ```
+  
