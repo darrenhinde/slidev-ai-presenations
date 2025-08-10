@@ -63,6 +63,21 @@ Follow [slide-styling-guidelines.mdc](mdc:.cursor/rules/slide-creation/slide-sty
   - [Contact information]
   - [Additional resources]
 
+## Slide Mapping & Guardrails
+
+Plan each slide with layout and density checks:
+
+| Slide | Purpose | Layout | Theme (opt) | Guardrails Fit? |
+|-------|---------|--------|-------------|------------------|
+| 01    | Cover   | cover  | apple-basic | Yes              |
+| 02    | Agenda  | section|             | Yes              |
+| 03    | Problem | default + max-w-3xl |         | Yes/No |
+
+- Bullets: ≤ 5 per slide, 5–7 words each
+- Columns: ≤ 4 bullets/column
+- Code: ≤ 16 lines; break if longer
+- Diagram: ≤ 7 nodes; prefer LR
+
 ## Visual Elements Needed
 - [ ] Diagrams:
   - [List needed diagrams and brief descriptions]

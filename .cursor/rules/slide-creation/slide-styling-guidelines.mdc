@@ -37,6 +37,24 @@ alwaysApply: true
    - Use custom classes sparingly (max 1-2)
    - Avoid nested subgraphs when possible
 
+### Code Slide Guidelines
+1. **Line limits**:
+   - Show no more than 16 lines per slide
+   - Use line highlighting to stage attention across steps
+2. **Split long code**:
+   - Split into multiple slides or use `<v-clicks>` with separate code blocks
+3. **Sizing**:
+   - Prefer `text-sm` or `text-base` for code, maintain readability
+
+### Responsive Width & Typography
+- Constrain content width with `max-w-3xl mx-auto`
+- Use `text-base md:text-lg leading-tight` for main content
+- Add vertical rhythm with `space-y-2`
+
+### Reveals & Pacing
+- Use `<v-click>` or `<v-clicks>` to reveal groups of content
+- Avoid revealing every single bullet individually unless necessary
+
 ### Responsive Layout Formula (Always Use These)
 1. **Grid patterns**:
    ```html

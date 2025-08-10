@@ -87,6 +87,32 @@ Slidev auto‑scales text but the following tips help avoid overflow:
 
 ---
 
+## 4.1 Layout Decision Matrix (pick the right layout fast)
+
+- **Cover / Title**: `layout: cover` (or theme `intro`)
+- **Agenda / Section**: `layout: section`
+- **Simple text list**: `layout: default` + `max-w-3xl mx-auto space-y-2`
+- **Comparison**: two‑column grid (`grid grid-cols-1 md:grid-cols-2 gap-4 items-start`)
+- **Image focus**: `layout: center` or two‑column text+image
+- **Code focus**: `layout: default`, ≤ 16 lines visible, use highlights
+- **Diagram**: Mermaid `graph LR`, ≤ 7 nodes, short labels
+- **Quote**: `layout: quote`
+
+Density guardrails:
+- Bullets: max 4–5 per slide, 5–7 words each
+- Per column: ≤ 4 bullets
+- Code: ≤ 16 lines on screen; split or stage reveals beyond that
+- Diagram: ≤ 7 nodes; keep labels short
+
+If any guardrail is exceeded → split the slide or use `<v-clicks>` to reveal groups.
+
+Responsive helpers:
+- Spacing: `p-2 sm:p-3 md:p-4`, `space-y-2`
+- Width: `max-w-3xl mx-auto`
+- Typography: `text-base md:text-lg leading-tight`
+
+---
+
 ## 5. Theme Selection Guide
 
 | Theme | Visual style | Ideal for | Notable layouts/components |
@@ -150,6 +176,42 @@ class: text-white
 ---
 
 # Big Message
+```
+
+### Text + Image (right)
+```md
+---
+layout: default
+---
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+  <div class="space-y-2">
+    # Headline
+    - Point 1
+    - Point 2
+    - Point 3
+  </div>
+  <div class="flex justify-center">
+    <img src="/images/example.jpg" class="h-60 rounded shadow" />
+  </div>
+</div>
+```
+
+### Code with highlights (≤ 16 lines)
+```ts {1,4-6|2-3|all}
+export function compute(value: number): number {
+  const normalized = normalize(value)
+  const validated = validate(normalized)
+  const result = runAlgorithm(validated)
+  return result
+}
+```
+
+### Mermaid small diagram (≤ 7 nodes)
+```mermaid
+%%{init: { 'theme': 'neutral', 'logLevel': 'fatal' } }%%
+graph LR
+  A[Input] --> B[Process]
+  B --> C[Output]
 ```
 
 ---

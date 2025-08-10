@@ -1,110 +1,131 @@
-# Slidev Multi-Presentation Repository
+# Slidev Multi-Presentation Workspace
 
-This repository is set up to manage multiple [Slidev](https://sli.dev/) presentations, each of which can be individually developed, built, and exported.
+Manage multiple [Slidev](https://sli.dev) decks in one repo. Each deck runs independently and can be developed, exported, and deployed on its own.
 
-## Quick Start
+## AI‑Assisted Slide Generation
 
-The easiest way to work with presentations is to use the interactive menu:
+This workspace is designed to automate slide creation using AI tools such as Cursor and Claude Code (CLI). The goal is to quickly scaffold, structure, and style Slidev decks with minimal manual setup.
+
+- Drive workflows via the root scripts (menu/create/run/export)
+- Auto‑generate a deck from `context-template.md`, then split slides under `slides/`
+- Apply the slide design principles below to ensure clean, non‑overflowing slides 
+- Use the .cursor rules file for Cursor AI assistant instructions
+- Use `CLAUDE.md` for Claude Code (CLI) AI assistant instructions and design rules
+
+
+## Commands
+
+Use the root scripts for all routine tasks:
 
 ```bash
-pnpm menu
+# Interactive menu (recommended)
+npm run menu
+
+# Create a new deck
+npm run create -- "Your Presentation Name"
+
+# Run a specific deck
+npm run run -- <presentation-name>
+
+# List available decks
+npm run list
+
+# Export all decks (PDF)
+npm run export-all
 ```
 
-This will display an interactive menu that allows you to:
-- Run any presentation in development mode
-- Export any presentation to PDF
-- Create a new presentation
-- Navigate between presentations easily
-
-## Structure
-
-- Each presentation is stored in its own subdirectory under `presentations/`
-- Each presentation directory contains:
-  - `slides.md` - The main content file for the presentation
-  - `package.json` - Configuration for that specific presentation
-  - Any assets specific to that presentation
-
-## Creating a New Presentation
-
-Use the interactive menu or the provided script to create a new presentation:
+Per‑deck commands (inside `presentations/<name>`):
 
 ```bash
-# Using the menu (recommended)
-pnpm menu
-# Select option 3: Create a new presentation
-
-# Or using the script directly
-./create-presentation.sh "My Presentation Title"
-```
-
-This will:
-1. Create a new directory in `presentations/` with a kebab-case version of your title
-2. Set up the basic slides.md file with your title
-3. Create a package.json with necessary scripts
-
-## Working with Presentations
-
-### Starting a Presentation in Development Mode
-
-```bash
-# Using the menu (recommended)
-pnpm menu
-# Select option 1: Run a presentation (dev mode)
-
-# Or manually
-cd presentations/your-presentation-name
+# Dev server (http://localhost:3030)
 pnpm slidev
+
+# Export
+pnpm slidev export      # choose format via prompt
+pnpm export:pdf         # if provided by the deck
+pnpm export:png         # if provided by the deck
 ```
 
-This will start the slidev dev server with hot reloading.
+## Project Structure
 
-### Exporting a Presentation to PDF
+- `presentations/` — one folder per deck
+- `components/` — shared Vue components
+- `scripts/` — menu, create, and run helpers
+- `docs/` — local best‑practice docs
+- `images/` — shared images
 
-```bash
-# Using the menu (recommended)
-pnpm menu
-# Select option 2: Export a presentation to PDF
+Typical deck layout:
 
-# Or manually
-cd presentations/your-presentation-name
-pnpm slidev export
-# or use the script shortcut
-pnpm export:pdf
+```
+presentations/my-presentation/
+├─ slides.md                 # headmatter + slide imports (also opening slide)
+├─ slides/                   # split slides for modularity
+│  ├─ 01-intro.md
+│  ├─ 02-problem.md
+│  └─ …
+├─ assets/                   # images/diagrams/code examples (optional)
+└─ package.json              # deck scripts
 ```
 
-### Exporting to Other Formats
+## Create a New Deck
 
 ```bash
-cd presentations/your-presentation-name
-# For PNG export
-pnpm export:png
+# Recommended (guided)
+npm run menu
+
+# Or direct
+npm run create -- "My Presentation Title"
+# alternatively
+./scripts/create-presentation.sh "My Presentation Title"
+```
+
+What happens:
+- A new folder under `presentations/` using a kebab‑cased version of the title
+- `slides.md` created from `context-template.md` with the title injected
+- A deck‑level `package.json` with standard Slidev scripts
+
+Next steps:
+1) Open `slides.md` and set global headmatter (this doubles as the opening slide).
+2) Create `slides/` and split content into small files; import them into `slides.md` using `src:`.
+3) Optional: add an `assets/` folder for deck‑specific images and diagrams.
+
+## Slide Design Principles
+
+- Keep slides light: 4–5 bullets, 5–7 words each; split dense content into multiple slides.
+- Use responsive layouts: grids and two‑column patterns with adequate gaps.
+- Maintain margins and spacing: `p-2 sm:p-3 md:p-4`, ~10% safe area.
+- Typography hierarchy: titles `text-2xl–4xl`, body `text-base–lg`, captions `text-xs–sm`.
+- Code: highlight lines to guide attention (` ```ts {2-3|5|all} `).
+- Diagrams (Mermaid): left‑to‑right, 5–7 nodes, short labels; prefer `scale: 0.7–0.8`.
+- Reveals: use `<v-click>` to reveal sections, not every bullet.
+
+See `docs/slidev-best-practices.md` and `CLAUDE.md` for examples and snippets.
+
+For AI assistants: follow the Layout Decision Matrix and Density Guardrails in `CLAUDE.md` §"AI Authoring Rubric" and `docs/slidev-best-practices.md` §4.1 to avoid overflow and pick appropriate themes/layouts.
+
+## Develop, Test, Export
+
+- Start dev: `npm run run -- <name>` or from the menu; hot‑reload on `http://localhost:3030`.
+- Test at 640px, 1024px, 1536px; use Presenter Mode (`P`) and Overview (`O`).
+- Export: inside the deck, run `pnpm slidev export` (PDF/PNG) or deck scripts (`export:pdf`, `export:png`).
+- Build static site: `pnpm slidev build` (outputs `dist/`).
+
+## Sample Deck
+
+An example lives in `presentations/Sample-Presentation/`. Try:
+
+```bash
+npm run run -- Sample-Presentation
 ```
 
 ## Shared Resources
 
-If you want to share components, styles, or other resources between presentations:
+- `components/` for reusable Vue components
+- `images/` for shared image assets
+- `setup/mermaid.ts` for Mermaid config
 
-- `components/` - For shared Vue components
-- `snippets/` - For shared code snippets
-- `public/` - For shared public assets
+## References
 
-## Adding Dependencies
-
-If you need specific dependencies for a particular presentation, you can add them to that presentation's package.json:
-
-```bash
-cd presentations/your-presentation-name
-pnpm add some-package
-```
-
-For global dependencies that should be available to all presentations, add them to the root package.json.
-
-## Customizing Presentations
-
-Each presentation can have its own:
-- Theme
-- Layout
-- Configuration
-- Style overrides
-
-See the [Slidev documentation](https://sli.dev/) for details on customization options.
+- Local best practices: `docs/slidev-best-practices.md`
+- AI assistant guide: `CLAUDE.md`
+- Slidev docs: https://sli.dev

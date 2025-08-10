@@ -51,12 +51,49 @@ Follow [2-new-presentation.mdc](mdc:.cursor/rules/2-new-presentation.mdc) when c
 ```
 
 ## 5. Slide Creation/Editing Rules
+Follow the layout matrix and density guardrails to avoid overflow and pick appropriate layouts/themes.
+
+See:
+- [4-slide-creation-guide.mdc](mdc:.cursor/rules/4-slide-creation-guide.mdc)
+- [slide-styling-guidelines.mdc](mdc:.cursor/rules/slide-creation/slide-styling-guidelines.mdc)
+- `CLAUDE.md` (AI Authoring Rubric)
+
 - Keep content concise - 5-7 bullet points maximum per slide
 - Maintain consistent styling throughout the presentation
 - Use appropriate layouts for different content types
 - Implement two-column layouts for comparisons or code+explanation
 - Test frequently to catch rendering issues early
 - Follow the front-matter cheatsheet below
+
+### AI Authoring Rubric (layout, theme, density)
+
+- Layout intent:
+  - Cover → `layout: cover`
+  - Section/Agenda → `layout: section`
+  - Text list → `layout: default` + `max-w-3xl mx-auto space-y-2`
+  - Comparison → grid `grid grid-cols-1 md:grid-cols-2 gap-4 items-start`
+  - Image focus → `layout: center` or two‑column text+image
+  - Code → `layout: default` with ≤ 16 visible lines; use highlights
+  - Diagram → Mermaid `graph LR`, ≤ 7 nodes, short labels
+  - Quote → `layout: quote`
+
+- Theme selection:
+  - Minimal/corporate: `apple-basic`
+  - Playful/creative: `bricks`
+  - Editorial/long‑form: `seriph`
+  - Brandable/dark+light: `penguin`
+
+- Density guardrails:
+  - Bullets: max 4–5 per slide, 5–7 words each
+  - Columns: ≤ 4 bullets per column
+  - Code: ≤ 16 lines; split or stage via highlights
+  - Diagram: ≤ 7 nodes; prefer LR
+  - If exceeded → split slide or use `<v-clicks>` reveals
+
+- Responsive helpers:
+  - `p-2 sm:p-3 md:p-4`, `space-y-2`
+  - `max-w-3xl mx-auto`
+  - `text-base md:text-lg leading-tight`
 
 ## 6. Front-matter Cheatsheet
 ```yaml

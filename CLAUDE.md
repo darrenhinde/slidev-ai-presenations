@@ -1,142 +1,337 @@
-# CLAUDE.md
+## Claude/Cursor Guide for Slidev Presentations
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This guide defines how AI assistants (Claude, Cursor) should create and maintain Slidev decks in this repository, aligned with our workspace rules and design standards.
 
-## Project Overview
+---
 
-This is a multi-presentation Slidev repository that manages multiple presentations independently. Each presentation lives in its own subdirectory under `presentations/` with its own configuration and assets.
+## Golden Rules
 
-## Common Commands
+- **All new decks live under `presentations/`**. Use the project scripts, not ad‑hoc commands.
+- **Plan first**. Create `presentation-plan.txt` in the deck and populate it using `presentation-plan-template.txt`.
+- **Split slides**. Keep content modular in `slides/` and import them into `slides.md` with `src:`.
+- **Design for clarity**. Constrain content to prevent overflow, use visual hierarchy, and test at multiple sizes.
+- **Reveal strategically**. Prefer section reveals over over‑animating bullet items.
 
-### Interactive Menu (Primary Interface)
+---
+
+## Project Setup (scripts)
+
+Use the root scripts. Examples use npm; pnpm/yarn also work.
+
 ```bash
-pnpm menu
+# Interactive menu (recommended)
+npm run menu
+
+# Create a new presentation
+npm run create -- "Your Presentation Name"
+
+# Run a specific presentation
+npm run run -- <presentation-name>
+
+# List available presentations
+npm run list
+
+# Export all presentations (PDF)
+npm run export-all
 ```
-This opens an interactive terminal menu for all common operations.
 
-### Individual Presentation Management
+Per‑deck commands (inside a presentation directory):
+
 ```bash
-# Start a presentation in development mode
-cd presentations/presentation-name
+# Start the dev server for that deck
 pnpm slidev
 
-# Export to PDF
-cd presentations/presentation-name  
-pnpm slidev export
-# or use shortcut:
-pnpm export:pdf
-
-# Export to PNG
-pnpm export:png
+# Export formats
+pnpm slidev export           # prompt for format
+pnpm export:pdf              # if provided by the deck
+pnpm export:png              # if provided by the deck
 ```
 
-### Root-Level Commands
-```bash
-# List all presentations
-pnpm list
+---
 
-# Create new presentation
-pnpm create
-# or directly:
-./scripts/create-presentation.sh "Presentation Name"
+## Repository & Deck Structure
 
-# Run specific presentation
-pnpm run
+- `presentations/` — one folder per deck
+- `components/` — shared Vue components for all decks
+- `scripts/` — helper scripts for creation/run/export
+- `docs/` — local documentation (`slidev-best-practices.md`)
+- `images/` — shared image assets
 
-# Export all presentations to PDF
-pnpm export-all
-```
+Typical deck layout:
 
-## Repository Architecture
-
-### Directory Structure
-- `presentations/` - Each subdirectory contains an independent Slidev presentation
-- `components/` - Shared Vue components available to all presentations
-- `scripts/` - Shell scripts for presentation management
-- `docs/` - Documentation including best practices guide
-- `images/` - Shared image assets
-- `context-template.md` - Template used when creating new presentations
-
-### Presentation Structure
-Each presentation follows this pattern:
 ```
 presentations/my-presentation/
-├── slides.md              # Main presentation file with frontmatter config
-├── package.json           # Presentation-specific scripts and dependencies
-├── slides/               # Optional: split slides for better organization
-│   ├── 01-intro.md
-│   ├── 02-content.md
-│   └── ...
-└── node_modules/         # Presentation-specific dependencies
+├─ slides.md                 # headmatter + slide imports
+├─ slides/                   # split slides for modularity
+│  ├─ 01-intro.md
+│  ├─ 02-problem.md
+│  └─ …
+├─ assets/                   # deck-specific images/diagrams/code
+└─ package.json              # deck scripts
 ```
 
-### Key Configuration Files
-- Root `package.json` contains global dependencies (@slidev/cli, themes)
-- Each presentation's `package.json` defines local scripts and dependencies
-- `slides.md` files use YAML frontmatter for theme, layout, and styling configuration
+---
 
-### Shared Resources
-- Components in `components/` are available to all presentations
-- Common dependencies are managed at the root level
-- Presentation-specific dependencies can be added to individual presentation directories
+## New Presentation Checklist
 
-### Presentation Creation Workflow
-1. New presentations are created from `context-template.md`
-2. Directory name is automatically kebab-cased from the title
-3. Basic package.json with standard scripts is auto-generated
-4. Presentations can be organized with split slides using `src:` frontmatter
+1. Create the deck with the project script (see Project Setup).
+2. Add a `presentation-plan.txt` to the new deck by copying from `presentation-plan-template.txt` and fill it out.
+3. In `slides.md`, define global headmatter and make it your opening slide:
 
-### Development Workflow
-- Use the interactive menu (`pnpm menu`) for most operations
-- Each presentation runs independently on localhost:3030
-- Hot reloading is available in development mode
-- Export functionality supports PDF and PNG formats
+```yaml
+---
+theme: default
+title: Your Presentation Title
+transition: slide-left
+lineNumbers: true
+fonts:
+  sans: Montserrat, Roboto
+highlighter: shiki
+---
+```
 
-## Slide Creation & Management Guidelines
+4. Create a `slides/` directory and split content into small files.
+5. Import slides back into `slides.md` using `src:` blocks:
 
-### Creating New Presentations
-Follow the established workflow using our cursor rules:
-- **@new-presentation.mdc** - Complete guide for creating new presentations
-- **@presentation-plan-template** - Template for planning presentations effectively
-- **@slide-creation-guide** - Patterns and examples for slide creation
+```md
+---
+src: ./slides/01-intro.md
+---
 
-### Slide Styling & Design
-Adhere to our styling guidelines to prevent overflow and maintain professional appearance:
-- **@slide-styling-guidelines.mdc** - Comprehensive rules for preventing content overflow
-- **@theme-selection.mdc** - Guide for choosing and customizing themes
-- **@slide-creation-guide** - Layout patterns and responsive design formulas
+---
+src: ./slides/02-problem.md
+---
+```
 
-### Content Planning & Organization
-Use our planning frameworks for effective presentations:
-- **@slide-content-planning** - Detailed guidance on defining objectives and audience
-- **@presentation-plan-template** - Structured approach to presentation planning
-- **@slide-creation-guide** - Quick reference for common slide patterns
+---
 
-### Animation & Visual Engagement
-For dynamic presentations, follow our animation guidelines:
-- **@animation-creation.mdc** - Remotion-based animation techniques (for video content)
-- **@slide-styling-guidelines.mdc** - Responsive design and overflow prevention
-- Use strategic `v-click` directives for section-based reveals rather than animating every point
+## Slide Design Principles (placement, spacing, flow)
 
-### Best Practices Summary
-1. **Always start with planning** - Use the presentation plan template
-2. **Follow styling guidelines** - Prevent overflow and maintain readability
-3. **Choose appropriate themes** - Match theme to content type and audience
-4. **Use strategic animations** - Reveal sections, not individual points
-5. **Test responsiveness** - Ensure content works across all screen sizes
-6. **Organize content effectively** - Split complex slides into multiple files
+- **Keep it short**
+  - 4–5 bullets per slide, 5–7 words each
+  - Prefer multiple slides over dense content
 
-### File Organization Standards
-- All new presentations go in the `presentations/` folder
-- Use the project scripts for creation and management
-- Follow the established naming conventions (kebab-case for directories)
-- Create `presentation-plan.txt` for each new presentation
-- Use split slides for better organization and reusability
+- **Layout patterns**
+  - Two‑column grid:
 
-### Quality Assurance
-- Test presentations at multiple viewport sizes (640px, 1024px, 1536px)
-- Use Presenter Mode (press `P`) to check for overflow
-- Validate responsive layouts with the provided testing checklist
-- Ensure animations enhance rather than distract from content
+```md
+---
+layout: default
+---
+# Two Column
 
-For detailed guidance on any of these areas, refer to the specific cursor rules mentioned above. These rules provide comprehensive, project-specific guidance that ensures consistency and quality across all presentations in this repository.
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
+  <div>
+    ## Left
+    - Point A
+    - Point B
+  </div>
+  <div>
+    ## Right
+    - Point C
+    - Point D
+  </div>
+</div>
+```
+
+- **Responsive spacing**
+  - Use `p-2 sm:p-3 md:p-4` for safe padding
+  - Keep ~10% margins around content
+
+- **Typography hierarchy**
+  - Titles: `text-2xl` – `text-4xl` (sparingly)
+  - Body: `text-base` – `text-lg`
+  - Captions: `text-xs` – `text-sm`
+  - Add `leading-tight` to reduce line spacing when needed
+
+- **Images & media**
+  - Center images and constrain height
+
+```md
+---
+layout: center
+---
+# Image Example
+
+<div class="flex justify-center">
+  <img src="/path/to/image.jpg" class="h-60 rounded shadow" />
+  
+</div>
+```
+
+- **Code slides**
+  - Use line highlights to stage focus
+
+```ts {2-3|5|all}
+function example() {
+  const value = computeSomething()
+  
+  return value
+}
+```
+
+- **Diagrams (Mermaid)**
+  - Prefer `graph LR` (left‑right)
+  - Limit to 5–7 nodes; short labels
+  - Set `scale: 0.7` or `0.8`
+
+```mermaid
+%%{init: { 'theme': 'neutral', 'logLevel': 'fatal' } }%%
+graph LR
+  A[Start] --> B[Step]
+  B --> C[End]
+```
+
+- **Reveals & pacing**
+  - Use `<v-click>` to reveal groups of content
+  - Avoid animating every bullet; reveal sections
+
+---
+
+## AI Authoring Rubric (choose layout, theme, and density)
+
+- Intent first (pick one):
+  - Title/Cover → `layout: cover` (or theme `intro`)
+  - Section/Agenda → `layout: section`
+  - List/Text → `layout: default` with `max-w-3xl space-y-2 text-lg`
+  - Comparison → two‑column grid (`grid grid-cols-1 md:grid-cols-2 gap-4 items-start`)
+  - Image‑heavy → `layout: center` or two‑column with image and caption
+  - Code Focus → `layout: default` with ≤ 16 visible lines, add highlights
+  - Diagram → Mermaid `graph LR`, ≤ 7 nodes, short labels
+  - Quote/Statement → `layout: quote`
+
+- Theme selection (pick for the talk style):
+  - Minimal/corporate: `apple-basic`
+  - Playful/creative: `bricks`
+  - Editorial/long‑form: `seriph`
+  - Brandable/dark+light: `penguin`
+  - If uncertain, start with `default` and only switch when a theme‑specific layout is required (e.g., `image-right`).
+
+- Density guardrails (enforce to avoid overflow):
+  - Bullets: max 4–5 per slide, 5–7 words each
+  - Columns: max 4 bullets per column
+  - Code: show ≤ 16 lines; if > 16, split across steps or slides; highlight critical lines
+  - Diagram: ≤ 7 nodes; prefer LR layout
+  - If a slide exceeds any limit, split into multiple slides or add `<v-clicks>` reveals
+
+- Responsive classes to keep content inside the safe area:
+  - Spacing: `p-2 sm:p-3 md:p-4`, `space-y-2`
+  - Width: `max-w-3xl mx-auto`
+  - Typography: `text-base md:text-lg leading-tight`
+
+- Patterns (copy/paste):
+
+Two‑column comparison
+
+```md
+---
+layout: default
+---
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
+  <div>
+    ### Pros
+    <v-clicks>
+    - Simple
+    - Fast
+    - Flexible
+    </v-clicks>
+  </div>
+  <div>
+    ### Cons
+    <v-clicks>
+    - Limited
+    - Learning curve
+    - Maintenance
+    </v-clicks>
+  </div>
+  
+</div>
+```
+
+Image right, text left (theme‑agnostic)
+
+```md
+---
+layout: default
+---
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+  <div class="space-y-2">
+    # Headline
+    - Key point 1
+    - Key point 2
+    - Key point 3
+  </div>
+  <div class="flex justify-center">
+    <img src="/images/example.jpg" class="h-60 rounded shadow" />
+  </div>
+</div>
+```
+
+Code with staged focus
+
+```ts {1,4-6|2-3|all}
+export function compute(value: number): number {
+  const normalized = normalize(value)
+  const validated = validate(normalized)
+  // heavy work
+  const result = runAlgorithm(validated)
+  return result
+}
+```
+
+Mermaid small diagram
+
+```mermaid
+%%{init: { 'theme': 'neutral', 'logLevel': 'fatal' } }%%
+graph LR
+  A[Input] --> B[Process]
+  B --> C[Output]
+```
+
+---
+
+## Testing & Export
+
+- Test at 640px, 1024px, 1536px
+- Presenter Mode (`P`) to check overflow and notes
+- Overview (`O`) to assess pacing
+
+```bash
+# Export a deck to PDF/PNG
+pnpm slidev export
+
+# Build static site (SPA)
+pnpm slidev build
+```
+
+---
+
+## Quick Patterns (copy/paste)
+
+### Section Divider
+```md
+---
+layout: section
+---
+# New Section
+```
+
+### Quote
+```md
+---
+layout: quote
+---
+"A short statement that stands out on its own."
+
+<footer>Attribution</footer>
+```
+
+---
+
+## References
+
+- Local: `docs/slidev-best-practices.md`
+- Slidev docs: [sli.dev](https://sli.dev)
+- Theme gallery: [sli.dev/themes](https://sli.dev/themes)
+
+Follow the workspace rules for slide styling, planning, and creation. When in doubt, split the slide, reduce text, and test responsiveness.

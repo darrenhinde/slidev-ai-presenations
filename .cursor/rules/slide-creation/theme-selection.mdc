@@ -7,6 +7,21 @@ alwaysApply: false
 
 ## Working with Different Themes in Slidev Presentations
 
+### At-a-glance Theme Selection
+
+- Minimal/corporate: `apple-basic`
+- Playful/creative: `bricks`
+- Editorial/long‑form: `seriph`
+- Brandable/dark+light: `penguin`
+
+Switch by changing deck head‑matter:
+
+```yaml
+---
+theme: penguin
+---
+```
+
 ### Project-Specific Theme Implementation
 For all presentations in this project, themes should be applied consistently with our established workflow:
 
@@ -300,6 +315,24 @@ themeConfig:
 - Serif fonts add formality and readability
 - Use custom fonts that align with project branding when possible
 - Works well for text-heavy presentations
+
+### 5. @slidev/theme-penguin
+
+**Best for**: Brand‑centric talks with sponsor footers; adaptable dark/light
+
+#### Installation
+```markdown
+---
+theme: penguin
+---
+```
+
+#### Notable layouts/components
+- `intro`, `presenter`, `text-image`, `fancy-link`
+
+#### Integration Notes
+- Good baseline when you need brandable slides with minimal overrides
+- Some layouts require SVG loader per theme docs; follow theme README if prompted
 
 ## Advanced Theme Customization
 
