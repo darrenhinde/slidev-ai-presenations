@@ -288,6 +288,65 @@ graph LR
   B --> C[Output]
 ```
 
+## Screen‑Aware Rules (Cursor‑aligned)
+
+These rules mirror our Cursor standards to ensure slides fit across screen sizes and components behave predictably.
+
+### Responsive layout formulas
+
+```html
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-3 md:gap-4">
+  <!-- Content here -->
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+  <div><!-- Left content --></div>
+  <div><!-- Right content --></div>
+</div>
+```
+
+### Responsive width & typography
+- Width: `max-w-3xl mx-auto`
+- Spacing: `p-2 sm:p-3 md:p-4`, `space-y-2`
+- Typography: `text-base md:text-lg leading-tight`
+
+### Content limits by component type
+
+| Component | Small | Medium | Large |
+|---|---|---|---|
+| Bullets per slide | 4–5 | 4–5 | 4–5 |
+| Text lines visible | ≤ 6 | ≤ 8 | ≤ 10 |
+| Code lines visible | ≤ 16 | ≤ 16 | ≤ 16 |
+| Diagram nodes | ≤ 4 | ≤ 6 | ≤ 7 |
+| Grid cells | ≤ 4 | ≤ 6 | ≤ 9 |
+
+If any limit is exceeded, split the content or reveal groups with `<v-clicks>`.
+
+### Mermaid diagrams (quick spec)
+- Prefer `graph LR`
+- Keep labels short; avoid branching
+- Target 5–7 nodes max; conservative sizing
+
+```mermaid
+%%{init: { 'theme': 'neutral', 'logLevel': 'fatal' } }%%
+graph LR
+  A[Input] --> B[Process]
+  B --> C[Output]
+```
+
+### Overflow detection (authoring aid)
+
+```html
+<div class="border border-dashed border-red-500 absolute inset-0 pointer-events-none"></div>
+```
+
+### Common overflow fixes
+- Shorten bullets (5–7 words), cap at 4–5
+- Split into multiple slides or use `<v-clicks>`
+- Constrain width with `max-w-3xl mx-auto`; add `leading-tight`
+- Replace dense text with icons/diagrams where possible
+- Move details to presenter notes
+
 ---
 
 ## Testing & Export
