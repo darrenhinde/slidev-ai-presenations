@@ -1,0 +1,84 @@
+---
+description: Slide image generation workflow using the MCP image-gen server (Together AI) for Slidev decks
+globs:
+  - presentations/**/*
+alwaysApply: true
+---
+
+# Slide Image Generation (MCP)
+
+Purpose: Offer to generate exactly two images for a deck’s slides and save them under the deck’s `assets/images/` folder. Uses the MCP server `image-gen` and its `generate_image` tool.
+
+## When to Ask
+- On new deck creation or when updating a deck’s plan, ask once: “Generate 2 images for this deck now?”
+- If yes, proceed with the flow below. If no, skip and continue slide work.
+
+## Prompting Strategy
+- Select 2 target slides that benefit most from visuals (e.g., cover, section divider, key concept).
+- Write 2 concise prompts (≤ 30 words) each. Prefer minimal, clean visuals that fit the brand/tone of the deck.
+  - Avoid tiny text in the image; let Slidev text carry messaging.
+
+## Tool to Use
+- MCP Server: `image-gen` (see local MCP config)
+- Tool: `generate_image`
+- Input Schema (exact):
+
+```json
+{
+  "prompt": { "type": "string", "description": "A descriptive prompt for generating the image" },
+  "width":  { "type": "integer", "description": "Width of the generated image in pixels (optional)" },
+  "height": { "type": "integer", "description": "Height of the generated image in pixels (optional)" },
+  "model":  { "type": "string", "description": "Exact model name in Together AI; falls back to default if incorrect" }
+}
+```
+
+## Default Parameters
+- `model`: `black-forest-labs/FLUX.1.1-pro`
+- `width`: 1024
+- `height`: 1024
+
+Note: If the model name is invalid, the server may fall back to `black-forest-labs/FLUX.1-krea-dev` per server behavior.
+
+## Call Pattern (run twice)
+- Call `generate_image` twice (one per prompt):
+
+```json
+{
+  "prompt": "<short, specific image description aligned to slide>",
+  "width": 1024,
+  "height": 1024,
+  "model": "black-forest-labs/FLUX.1.1-pro"
+}
+```
+
+## File Output & Insertion
+- Ensure deck folder structure exists:
+  - `/images/<project-name>/`
+- Save images using:
+  - `/images/<project-name>/<project-slug>-gen-01.png`
+  - `/images/<project-name>/<project-slug>-gen-02.png`
+- Insert into relevant slides via relative paths, e.g.:
+
+```md
+<img src="/images/<project-name>/<project-slug>-gen-01.png" class="h-60 rounded shadow" />
+```
+
+## Error Handling
+- If a generation call fails or returns unusable output:
+  - Re-ask for a refined prompt or suggest a simpler style.
+  - Optionally switch to a fallback prompt and retry once.
+
+## Reference
+- MCP server implementation and usage details: `https://github.com/sarthakkimtani/mcp-image-gen`
+- Together client example (JS) uses the model family we target:
+
+```js
+const response = await together.images.create({
+  model: "black-forest-labs/FLUX.1.1-pro",
+  prompt: "Cats eating popcorn",
+  steps: 10,
+  n: 4
+})
+```
+
+This rule limits to two images per deck unless explicitly asked to produce more.

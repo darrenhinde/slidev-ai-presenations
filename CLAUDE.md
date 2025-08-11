@@ -385,6 +385,27 @@ layout: quote
 <footer>Attribution</footer>
 ```
 
+## AI Image Generation (MCP)
+
+- Ask once on new deck creation or plan update: "Generate 2 images for this deck now?"
+- If yes:
+  - Write 2 concise prompts (≤ 30 words) aligned to the chosen slides (e.g., cover, section divider, key concept)
+  - Call MCP server `image-gen` tool `generate_image` twice with defaults:
+
+```json
+{
+  "prompt": "<short, specific image description aligned to slide>",
+  "width": 1024,
+  "height": 1024,
+  "model": "black-forest-labs/FLUX.1.1-pro"
+}
+```
+
+- Save to `/images/<project-name>/<project-slug>-gen-01.png` and `...-gen-02.png`
+- Insert via `<img src="/images/<project-name>/<project-slug>-gen-01.png" class="h-60 rounded shadow" />`
+- If a call fails, refine the prompt or retry once
+- Schema reference and server details: https://github.com/sarthakkimtani/mcp-image-gen
+
 ---
 
 ## References

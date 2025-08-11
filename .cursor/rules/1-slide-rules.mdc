@@ -56,6 +56,7 @@ Follow the layout matrix and density guardrails to avoid overflow and pick appro
 See:
 - [4-slide-creation-guide.mdc](mdc:.cursor/rules/4-slide-creation-guide.mdc)
 - [slide-styling-guidelines.mdc](mdc:.cursor/rules/slide-creation/slide-styling-guidelines.mdc)
+- [5-image-generation.mdc](mdc:.cursor/rules/5-image-generation.mdc) — MCP-based generation of exactly 2 images per deck
 - `CLAUDE.md` (AI Authoring Rubric)
 
 - Keep content concise - 5-7 bullet points maximum per slide
