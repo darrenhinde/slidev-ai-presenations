@@ -390,21 +390,29 @@ layout: quote
 - Ask once on new deck creation or plan update: "Generate 2 images for this deck now?"
 - If yes:
   - Write 2 concise prompts (≤ 30 words) aligned to the chosen slides (e.g., cover, section divider, key concept)
-  - Call MCP server `image-gen` tool `generate_image` twice with defaults:
+    - Call MCP server `together-ai` tool `post_images_generations` twice with defaults:
 
-```json
-{
-  "prompt": "<short, specific image description aligned to slide>",
-  "width": 1024,
-  "height": 1024,
-  "model": "black-forest-labs/FLUX.1.1-pro"
-}
-```
+  ```json
+  {
+    "prompt": "<short, specific image description aligned to slide>",
+    "model": "black-forest-labs/FLUX.1-dev",
+    "width": 1024,
+    "height": 1024,
+    "steps": 10,
+    "n": 1
+  }
+  ```
 
-- Save to `/images/<project-name>/<project-slug>-gen-01.png` and `...-gen-02.png`
+- When the API response returns an image URL (e.g., `https://api.together.ai/shrt/5HygAaJyD79QmqXT`):
+  1. Download the image using curl command:
+     ```bash
+     curl -o "/images/<project-name>/<project-slug>-gen-01.png" "https://api.together.ai/shrt/5HygAaJyD79QmqXT"
+     ```
+  2. Save and rename the downloaded image to `/images/<project-name>/<project-slug>-gen-01.png` and `...-gen-02.png`
 - Insert via `<img src="/images/<project-name>/<project-slug>-gen-01.png" class="h-60 rounded shadow" />`
 - If a call fails, refine the prompt or retry once
-- Schema reference and server details: https://github.com/sarthakkimtani/mcp-image-gen
+- MCP server: `@open-mcp/together-ai`
+- Remote server URL: `https://mcp.open-mcp.org/api/server/together-ai@latest/mcp`
 
 ---
 

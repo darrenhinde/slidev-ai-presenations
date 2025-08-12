@@ -12,6 +12,16 @@ This workspace is designed to automate slide creation using AI tools such as Cur
 - Use the .cursor rules file for Cursor AI assistant instructions
 - Use `CLAUDE.md` for Claude Code (CLI) AI assistant instructions and design rules
 
+### AI Image Generation
+
+Enhance your presentations with AI-generated images using Together AI:
+
+1. **Get an API Key**: Visit [https://www.open-mcp.org/servers/together-ai](https://www.open-mcp.org/servers/together-ai) to obtain a Together AI API key
+2. **Configure MCP**: Add the Together AI MCP server to your Cursor configuration
+3. **Generate Images**: The AI assistant can automatically generate 2 custom images per deck and save them to `assets/images/`
+
+The AI will create images that complement your slide content and maintain visual consistency across your presentation.
+
 
 ## Commands
 

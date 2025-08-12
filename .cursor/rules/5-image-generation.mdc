@@ -1,5 +1,5 @@
 ---
-description: Slide image generation workflow using the MCP image-gen server (Together AI) for Slidev decks
+description: Slide image generation workflow using the MCP together-ai server (Together AI) for Slidev decks
 globs:
   - presentations/**/*
 alwaysApply: true
@@ -7,10 +7,10 @@ alwaysApply: true
 
 # Slide Image Generation (MCP)
 
-Purpose: Offer to generate exactly two images for a deck’s slides and save them under the deck’s `assets/images/` folder. Uses the MCP server `image-gen` and its `generate_image` tool.
+Purpose: Offer to generate exactly two images for a deck's slides and save them under the deck's `assets/images/` folder. Uses the MCP server `together-ai` and its `post_images_generations` tool.
 
 ## When to Ask
-- On new deck creation or when updating a deck’s plan, ask once: “Generate 2 images for this deck now?”
+- On new deck creation or when updating a deck's plan, ask once: "Generate 2 images for this deck now?"
 - If yes, proceed with the flow below. If no, skip and continue slide work.
 
 ## Prompting Strategy
@@ -19,44 +19,53 @@ Purpose: Offer to generate exactly two images for a deck’s slides and save the
   - Avoid tiny text in the image; let Slidev text carry messaging.
 
 ## Tool to Use
-- MCP Server: `image-gen` (see local MCP config)
-- Tool: `generate_image`
+- MCP Server: `together-ai` (see local MCP config)
+- Tool: `post_images_generations`
 - Input Schema (exact):
 
 ```json
 {
   "prompt": { "type": "string", "description": "A descriptive prompt for generating the image" },
-  "width":  { "type": "integer", "description": "Width of the generated image in pixels (optional)" },
-  "height": { "type": "integer", "description": "Height of the generated image in pixels (optional)" },
-  "model":  { "type": "string", "description": "Exact model name in Together AI; falls back to default if incorrect" }
+  "model": { "type": "string", "description": "Model name for image generation" },
+  "width": { "type": "integer", "description": "Width of the generated image in pixels" },
+  "height": { "type": "integer", "description": "Height of the generated image in pixels" },
+  "steps": { "type": "integer", "description": "Number of denoising steps" },
+  "n": { "type": "integer", "description": "Number of images to generate" }
 }
 ```
 
 ## Default Parameters
-- `model`: `black-forest-labs/FLUX.1.1-pro`
+- `model`: `black-forest-labs/FLUX.1-dev`
 - `width`: 1024
 - `height`: 1024
-
-Note: If the model name is invalid, the server may fall back to `black-forest-labs/FLUX.1-krea-dev` per server behavior.
+- `steps`: 10
+- `n`: 1
 
 ## Call Pattern (run twice)
-- Call `generate_image` twice (one per prompt):
+- Call `post_images_generations` twice (one per prompt):
 
 ```json
 {
   "prompt": "<short, specific image description aligned to slide>",
+  "model": "black-forest-labs/FLUX.1-dev",
   "width": 1024,
   "height": 1024,
-  "model": "black-forest-labs/FLUX.1.1-pro"
+  "steps": 10,
+  "n": 1
 }
 ```
 
 ## File Output & Insertion
 - Ensure deck folder structure exists:
   - `/images/<project-name>/`
-- Save images using:
-  - `/images/<project-name>/<project-slug>-gen-01.png`
-  - `/images/<project-name>/<project-slug>-gen-02.png`
+- When the API response returns an image URL (e.g., `https://api.together.ai/shrt/5HygAaJyD79QmqXT`):
+  1. Download the image using curl command:
+     ```bash
+     curl -o "/images/<project-name>/<project-slug>-gen-01.png" "https://api.together.ai/shrt/5HygAaJyD79QmqXT"
+     ```
+  2. Save and rename the downloaded image to:
+     - `/images/<project-name>/<project-slug>-gen-01.png`
+     - `/images/<project-name>/<project-slug>-gen-02.png`
 - Insert into relevant slides via relative paths, e.g.:
 
 ```md
@@ -69,14 +78,12 @@ Note: If the model name is invalid, the server may fall back to `black-forest-la
   - Optionally switch to a fallback prompt and retry once.
 
 ## Reference
-- MCP server implementation and usage details: `https://github.com/sarthakkimtani/mcp-image-gen`
-- Together client example (JS) uses the model family we target:
+- MCP server: `@open-mcp/together-ai`
+- Remote server URL: `https://mcp.open-mcp.org/api/server/together-ai@latest/mcp`
+- Together AI API documentation: https://docs.together.ai/
 
-```js
-const response = await together.images.create({
-  model: "black-forest-labs/FLUX.1.1-pro",
-  prompt: "Cats eating popcorn",
-  steps: 10,
+This rule limits to two images per deck unless explicitly asked to produce more.
+
   n: 4
 })
 ```
